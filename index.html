@@ -1,332 +1,316 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam_Chat</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700&display=swap');
+<!DOCTYPE html>  
+<html lang="ar" dir="rtl">    
+<head>    
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>Islam_Chat</title>    
+    <style>    
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;600;700&display=swap');  
+        * {    
+            margin: 0;    
+            padding: 0;    
+            box-sizing: border-box;    
+            font-family: 'Tajawal', sans-serif;    
+        }    
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
-        }
-
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            background: url('https://images.unsplash.com/photo-1561089489-f13d5e730d72?q=80&w=1374&auto=format&fit=crop') center/cover no-repeat;
-            overflow: hidden;
+            background: #0a192f;
         }
+        
+        .chat-container {    
+            width: 100vw;    
+            height: 100vh;    
+            display: flex;    
+            flex-direction: column;    
+            overflow: hidden;    
+            background: linear-gradient(135deg, #0a192f, #112240);    
+        }    
+        
+        .chat-header {    
+            background: linear-gradient(90deg, #0a4d68, #088395);    
+            color: #fff;    
+            padding: 20px;    
+            text-align: center;    
+            font-size: 24px;    
+            font-weight: bold;    
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);    
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);    
+            position: relative;    
+            overflow: hidden;    
+        }    
+        
+        .chat-header::before {    
+            content: "";    
+            position: absolute;    
+            top: 0;    
+            left: 0;    
+            right: 0;    
+            height: 3px;    
+            background: linear-gradient(90deg, #05bfdb, #00ffca);    
+        }    
+        
+        .chat-box {    
+            flex: 1;    
+            overflow-y: auto;    
+            padding: 20px;    
+            display: flex;    
+            flex-direction: column;    
+            gap: 15px;    
+            scrollbar-width: thin;    
+            scrollbar-color: rgba(0, 150, 136, 0.5) transparent;    
+            background: rgba(10, 25, 47, 0.9);    
+        }    
+        
+        .chat-box::-webkit-scrollbar {    
+            width: 8px;    
+        }    
+        
+        .chat-box::-webkit-scrollbar-thumb {    
+            background: rgba(0, 150, 136, 0.5);    
+            border-radius: 10px;    
+        }    
+        
+        .message {    
+            padding: 15px 20px;    
+            border-radius: 18px;    
+            max-width: 75%;    
+            word-wrap: break-word;    
+            line-height: 1.7;    
+            font-size: 16px;    
+            opacity: 0;    
+            transform: translateY(10px);    
+            animation: fadeIn 1s forwards;    
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);    
+            position: relative;    
+        }    
+        
+        .bot-message {    
+            background: linear-gradient(135deg, #088395, #05bfdb);    
+            color: #fff;    
+            align-self: flex-start;    
+            border-radius: 18px 18px 1px 18px;    
+            border-right: 3px solid #00ffca;    
+        }    
+        
+        .bot-message::before {    
+            content: "";    
+            position: absolute;    
+            left: -10px;    
+            top: 15px;    
+            width: 0;    
+            height: 0;    
+            border: 10px solid transparent;    
+            border-right-color: #088395;    
+        }    
+        
+        .user-message {    
+            background: linear-gradient(135deg, #0a4d68, #088395);    
+            color: #fff;    
+            align-self: flex-end;    
+            border-radius: 18px 18px 18px 1px;    
+            border-left: 3px solid #05bfdb;    
+        }    
+        
+        @keyframes fadeIn {    
+            from {    
+                opacity: 0;    
+                transform: translateY(10px);    
+            }    
+            to {    
+                opacity: 1;    
+                transform: translateY(0);    
+            }    
+        }    
+        
+        .chat-input {    
+            display: flex;    
+            align-items: center;    
+            padding: 15px 20px;    
+            border-top: 1px solid rgba(255, 255, 255, 0.1);    
+            background: rgba(10, 25, 47, 0.95);    
+            position: relative;    
+        }    
+        
+        .chat-input::before {    
+            content: "";    
+            position: absolute;    
+            top: 0;    
+            left: 0;    
+            right: 0;    
+            height: 2px;    
+            background: linear-gradient(90deg, #05bfdb, #00ffca);    
+        }    
+        
+        .chat-input input {    
+            flex: 1;    
+            padding: 14px 20px;    
+            border: none;    
+            border-radius: 30px;    
+            outline: none;    
+            font-size: 16px;    
+            background: rgba(255, 255, 255, 0.1);    
+            color: white;    
+            height: 50px;    
+            backdrop-filter: blur(5px);    
+            transition: all 0.3s ease;    
+        }    
+        
+        .chat-input input:focus {    
+            background: rgba(255, 255, 255, 0.15);    
+            box-shadow: 0 0 0 2px rgba(5, 191, 219, 0.3);    
+        }    
+        
+        .chat-input input::placeholder {    
+            color: rgba(255, 255, 255, 0.6);    
+            font-weight: 300;    
+        }    
+        
+        .chat-input img {    
+            width: 40px;    
+            height: 40px;    
+            cursor: pointer;    
+            margin-right: 10px;    
+            transition: 0.3s;    
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));    
+        }    
+        
+        .chat-input img:hover {    
+            transform: scale(1.1);    
+            filter: drop-shadow(0 2px 8px rgba(5, 191, 219, 0.5));    
+        }    
+        
+        span {    
+            color: #00ffca;    
+            font-weight: bold;    
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);    
+        }    
+        
+        @media screen and (max-width: 768px) {    
+            .chat-container {    
+                width: 100vw;    
+                height: 100vh;    
+                border-radius: 0;    
+            }    
+        
+            .chat-header {    
+                font-size: 20px;    
+                padding: 15px;    
+            }    
+        
+            .chat-box {    
+                padding: 15px;    
+            }    
+        
+            .message {    
+                font-size: 15px;    
+                padding: 12px 16px;    
+                max-width: 85%;    
+            }    
+        
+            .chat-input {    
+                padding: 12px 15px;    
+            }    
+        
+            .chat-input input {    
+                font-size: 15px;    
+                padding: 12px 16px;    
+                height: 46px;    
+            }    
+        
+            .chat-input img {    
+                width: 35px;    
+                height: 35px;    
+            }    
+        }    
+    </style>    
+</head>    
+<body>    
+    <div class="chat-container">    
+        <div class="chat-header"><span>Islam</span> Chat</div>    
+        <div class="chat-box" id="chat-box">    
+            <div class="message bot-message">السلام عليكم ورحمة الله وبركاته،       
+                يا صديقي، أنا إسلام شات، وأنا مساعدك الافتراضي. مهمتي هي الإجابة على أي سؤال ديني فقط بإذن الله.  .        
+                فضلًا، إذا كان لديك أي استفسار ديني، لا تتردد في سؤالي. 😊🤍</div>      
+        </div>      
+        <div class="chat-input">      
+            <input type="text" id="user-input" placeholder="أكتب هنا...">      
+            <img src="https://cdn-icons-png.freepik.com/512/2343/2343641.png" alt="Send" onclick="sendMessage()">      
+        </div>      
+    </div>      
+    <script>      
+        async function sendMessage() {    
+            let input = document.getElementById("user-input");    
+            let message = input.value.trim();    
+            if (message === "") return;  
+            let chatBox = document.getElementById("chat-box");    
+            let userMessage = document.createElement("div");
+            userMessage.classList.add("message", "user-message");
+            userMessage.textContent = message;
+            chatBox.appendChild(userMessage);
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        .chat-container {
-            width: 100vw;
-            height: 100vh;
-            background: rgba(10, 25, 47, 0.85);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+            let botMessage = document.createElement("div");
+            botMessage.classList.add("message", "bot-message");
+            botMessage.textContent = "يكتب الآن...";
+            chatBox.appendChild(botMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        .chat-header {
-            background: linear-gradient(90deg, #0a4d68, #088395);
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
+            const islamicKeywords = [
+            "الله", "الإسلام", "الدين", "الرسول", "محمد",
+            "الصحابة", "القرآن", "آية", "آيات", "سورة",
+            "تجويد", "حديث", "أحاديث", "حرام", "حلال",
+            "مكروه", "مستحب", "فرض", "سنة", "صلاة",
+            "زكاة", "النبي", "صوم", "حج", "جنة", "نار"
+            ];
 
-        .chat-header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #05bfdb, #00ffca);
-        }
+            const personalQuestions = [
+            "مين", "من انت", "مين الي عملك", "اين انت",
+            "احشتني", "عامل ايه", "اخبارك", "اخبارك ايه",
+            "فينك", "بحبك", "شكراً", "انت بني ادم",
+            "انت انسان", "عامل اية", "جنسك ايه", "هل أنت بخير", "واحشتني", "مين الي صنعك؟", "انت منين", "بقولك", "انت  مين"
+            ];
 
-        .chat-box {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(0, 150, 136, 0.5) transparent;
-            background: url('https://www.transparenttextures.com/patterns/arabesque.png') rgba(10, 25, 47, 0.7);
-        }
-
-        .chat-box::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .chat-box::-webkit-scrollbar-thumb {
-            background: rgba(0, 150, 136, 0.5);
-            border-radius: 10px;
-        }
-
-        .message {
-            padding: 15px 20px;
-            border-radius: 18px;
-            max-width: 75%;
-            word-wrap: break-word;
-            line-height: 1.7;
-            font-size: 16px;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeIn 1s forwards;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .bot-message {
-            background: linear-gradient(135deg, #088395, #05bfdb);
-            color: #fff;
-            align-self: flex-start;
-            border-radius: 18px 18px 1px 18px;
-            border-right: 3px solid #00ffca;
-        }
-
-        .bot-message::before {
-            content: "";
-            position: absolute;
-            left: -10px;
-            top: 15px;
-            width: 0;
-            height: 0;
-            border: 10px solid transparent;
-            border-right-color: #088395;
-        }
-
-        .user-message {
-            background: linear-gradient(135deg, #0a4d68, #088395);
-            color: #fff;
-            align-self: flex-end;
-            border-radius: 18px 18px 18px 1px;
-            border-left: 3px solid #05bfdb;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .chat-input {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(10, 25, 47, 0.9);
-            position: relative;
-        }
-
-        .chat-input::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #05bfdb, #00ffca);
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 30px;
-            outline: none;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            height: 50px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .chat-input input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 2px rgba(5, 191, 219, 0.3);
-        }
-
-        .chat-input input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 300;
-        }
-
-        .chat-input img {
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: 0.3s;
-            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
-        }
-
-        .chat-input img:hover {
-            transform: scale(1.1);
-            filter: drop-shadow(0 2px 8px rgba(5, 191, 219, 0.5));
-        }
-
-        span {
-            color: #00ffca;
-            font-weight: bold;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        @media screen and (max-width: 768px) {
-            .chat-container {
-                width: 100vw;
-                height: 100vh;
-                border-radius: 0;
-            }
-
-            .chat-header {
-                font-size: 20px;
-                padding: 15px;
-            }
-
-            .chat-box {
-                padding: 15px;
-            }
-
-            .message {
-                font-size: 15px;
-                padding: 12px 16px;
-                max-width: 85%;
-            }
-
-            .chat-input {
-                padding: 12px 15px;
-            }
-
-            .chat-input input {
-                font-size: 15px;
-                padding: 12px 16px;
-                height: 46px;
-            }
-
-            .chat-input img {
-                width: 35px;
-                height: 35px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="chat-container">
-        <div class="chat-header"><span>Islam</span> Chat</div>
-        <div class="chat-box" id="chat-box">
-            <div class="message bot-message">السلام عليكم ورحمة الله وبركاته،   
-                يا صديقي، أنا إسلام شات، وأنا مساعدك الافتراضي. مهمتي هي الإجابة على أي سؤال ديني فقط بإذن الله.  .    
-                فضلًا، إذا كان لديك أي استفسار ديني، لا تتردد في سؤالي. 😊🤍</div>  
-        </div>  
-        <div class="chat-input">  
-            <input type="text" id="user-input" placeholder="أكتب هنا...">  
-            <img src="https://cdn-icons-png.freepik.com/512/2343/2343641.png" alt="Send" onclick="sendMessage()">  
-        </div>  
-    </div>  
-<script>  
-    async function sendMessage() {
-    let input = document.getElementById("user-input");
-    let message = input.value.trim();
-    if (message === "") return;
-
-    let chatBox = document.getElementById("chat-box");
-    
-    
-    let userMessage = document.createElement("div");
-    userMessage.classList.add("message", "user-message");
-    userMessage.textContent = message;
-    chatBox.appendChild(userMessage);
-    input.value = "";
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    
-    let botMessage = document.createElement("div");
-    botMessage.classList.add("message", "bot-message");
-    botMessage.textContent = "يكتب الآن...";
-    chatBox.appendChild(botMessage);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    const islamicKeywords = [
-        "الله", "الإسلام", "الدين", "الرسول", "محمد", 
-        "الصحابة", "القرآن", "آية", "آيات", "سورة", 
-        "تجويد", "حديث", "أحاديث", "حرام", "حلال", 
-        "مكروه", "مستحب", "فرض", "سنة", "صلاة", 
-        "زكاة", "النبي", "صوم", "حج", "جنة", "نار"
-    ];
-
-    
-    const personalQuestions = [
-        "مين", "من انت", "مين الي عملك", "اين انت", 
-        "احشتني", "عامل ايه", "اخبارك", "اخبارك ايه", 
-        "فينك", "بحبك", "شكراً", "انت بني ادم", 
-        "انت انسان", "عامل اية", "جنسك ايه", "هل أنت بخير", "واحشتني", "مين الي صنعك؟", "انت منين", "بقولك", "انت  مين"
-    ];
-
-// التحقق من الأسئلة الشخصية أولا
-    const isPersonalQuestion = personalQuestions.some(question => 
-        message.includes(question)
-    );
-
-    if (isPersonalQuestion) {
-        botMessage.textContent = "أنا إسلام شات، برنامج ذكاء اصطناعي ديني لمساعدتك في الأمور الشرعية. تم تطويري بواسطة Mo Tc وأنا لا أستطيع فهم سؤالك لأنه غير ديني ويتعلق بسؤال عام. أنا مجرد برنامج لا أمتلك مشاعر أو وعيًا بشريًا.";
-        chatBox.scrollTop = chatBox.scrollHeight;
-        return;
-    }
-
-    try {
-        let response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyArOxhg4yOhMtlsCZg1emOBc78D8JKs41U", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ contents: [{ parts: [{ text: message }] }] })
-        });
-
-        let data = await response.json();
-        if (data.candidates && data.candidates[0]) {
-            const responseText = data.candidates[0].content.parts[0].text || "";
-
-            // التحقق مما إذا كان السؤال أو الإجابة تحتوي على كلمة إسلامية
-            const isIslamic = islamicKeywords.some(keyword => 
-                message.includes(keyword) || 
-                responseText.includes(keyword)
+            const isPersonalQuestion = personalQuestions.some(question =>
+                message.includes(question)
             );
 
-            if (isIslamic) {
-                botMessage.textContent = responseText;
-            } else {
-                botMessage.textContent = "🛑 عفوًا، هذا السؤال ليس له صلة بالدين الإسلامي. يُرجى طرح أسئلة متعلقة بالقرآن، السنة، الفقه، أو أي موضوع إسلامي آخر أو من الممكن إعادة صغية السوال مرة آخرة ،شكرًا لتفهمك!";
+            if (isPersonalQuestion) {
+                botMessage.textContent = "أنا إسلام شات، برنامج ذكاء اصطناعي ديني لمساعدتك في الأمور الشرعية. تم تطويري بواسطة Mo Tc وأنا لا أستطيع فهم سؤالك لأنه غير ديني ويتعلق بسؤال عام. أنا مجرد برنامج لا أمتلك مشاعر أو وعيًا بشريًا.";
+                chatBox.scrollTop = chatBox.scrollHeight;
+                return;
             }
-        } else {
-            botMessage.textContent = "♻️ لم أتمكن من فهم السؤال، يُرجى إعادة صياغته بطريقة أوضح.";
-        }
-    } catch (error) {
-        botMessage.textContent = "⚠ حدث خطأ في الاتصال. يرجى التأكد من اتصالك بالإنترنت والمحاولة مرة أخرى.";
-    }
 
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-</script>  
-</body>  
+            try {
+                let response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyArOxhg4yOhMtlsCZg1emOBc78D8JKs41U", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: message }] }] })
+                });
+
+                let data = await response.json();    
+                if (data.candidates && data.candidates[0]) {    
+                    const responseText = data.candidates[0].content.parts[0].text || "";    
+
+                    const isIslamic = islamicKeywords.some(keyword =>     
+                        message.includes(keyword) ||     
+                        responseText.includes(keyword)    
+                    );    
+
+                    if (isIslamic) {    
+                        botMessage.textContent = responseText;    
+                    } else {    
+                        botMessage.textContent = "🛑 عفوًا، هذا السؤال ليس له صلة بالدين الإسلامي. يُرجى طرح أسئلة متعلقة بالقرآن، السنة، الفقه، أو أي موضوع إسلامي آخر أو من الممكن إعادة صغية السوال مرة آخرة ،شكرًا لتفهمك!";    
+                    }    
+                } else {    
+                    botMessage.textContent = "♻ لم أتمكن من فهم السؤال، يُرجى إعادة صياغته بطريقة أوضح.";    
+                }
+            } catch (error) {
+                botMessage.textContent = "⚠ حدث خطأ في الاتصال. يرجى التأكد من اتصالك بالإنترنت والمحاولة مرة أخرى.";
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>      
 </html>
